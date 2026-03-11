@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Audio Pan & Boost
-// @version      0.2
+// @version      0.2.1
 // @description  Pan YouTube video audio left or right and boost up to x5
 // @match        https://www.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
@@ -70,10 +70,10 @@
         return slider;
     }
 
-    function addButton() {
+    function addButtons() {
         const volumeArea = document.querySelector(".ytp-volume-area");
 
-        console.log("addButton Pan");
+        console.log("addButtons");
 
         //create sliders
         panSlider = createSlider("pan", "-100", "100", "1", "120px", updatePanValue);
@@ -90,6 +90,25 @@
         boostButton.style.width = (boostButton.clientWidth+5) + "px";
     }
 
+    document.addEventListener('yt-navigate-start', () => {
+        if (!window.location.pathname.startsWith("/watch")) { return }
+
+        console.log("Reset pan and gain value")
+
+        if (panNode) {
+            panSlider.style.display = 'none';
+            panNode.pan.value = 0;
+            panSlider.value = 0;
+        }
+
+        if (gainNode) {
+            boostSlider.style.display = 'none';
+            boostSlider.value = 0;
+            updateGainValue();
+        }
+
+    })
+
     document.addEventListener('yt-navigate-finish', () => {
         // Run the function every time you navigate to a new page
         if (!window.location.pathname.startsWith("/watch")) { return }
@@ -97,7 +116,7 @@
         let alreadyAppended = document.getElementById("panButton");
         console.log(alreadyAppended);
         if (!alreadyAppended) {
-            addButton();
+            addButtons();
         }
         let audioCtx = new AudioContext();
         let video = document.querySelector("video");
