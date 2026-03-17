@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         YouTube Audio Pan & Boost
-// @version      0.2.1
+// @version      0.2.2
 // @description  Pan YouTube video audio left or right and boost up to x5
 // @match        https://www.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
