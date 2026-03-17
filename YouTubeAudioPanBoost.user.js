@@ -90,10 +90,9 @@
         boostButton.style.width = (boostButton.clientWidth+5) + "px";
     }
 
-    document.addEventListener('yt-navigate-start', () => {
-        if (!window.location.pathname.startsWith("/watch")) { return }
+    function resetValues() {
 
-        console.log("Reset pan and gain value")
+        console.log("Reset pan and gain value");
 
         if (panNode) {
             panSlider.style.display = 'none';
@@ -107,7 +106,7 @@
             updateGainValue();
         }
 
-    })
+    }
 
     document.addEventListener('yt-navigate-finish', () => {
         // Run the function every time you navigate to a new page
@@ -115,9 +114,11 @@
 
         let alreadyAppended = document.getElementById("panButton");
         console.log(alreadyAppended);
-        if (!alreadyAppended) {
-            addButtons();
+        if (alreadyAppended) {
+            resetValues();
+            return;
         }
+        addButtons();
         let audioCtx = new AudioContext();
         let video = document.querySelector("video");
         let source = audioCtx.createMediaElementSource(video);
